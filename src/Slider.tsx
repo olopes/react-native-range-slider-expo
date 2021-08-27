@@ -23,7 +23,8 @@ interface SliderProps {
     rangeLabelsTextColor?: string,
     showRangeLabels?: boolean,
     showValueLabels?: boolean,
-    initialValue?: number
+    initialValue?: number,
+    formatValue?: (value:number) => string
 }
 
 export const Slider = ({
@@ -38,7 +39,8 @@ export const Slider = ({
     rangeLabelsTextColor = 'rgb(60,60,60)',
     showRangeLabels = true,
     showValueLabels = true,
-    initialValue
+    initialValue,
+    formatValue = (value:number) => value.toString()
 }: SliderProps) => {
 
     // settings
@@ -70,7 +72,7 @@ export const Slider = ({
     useEffect(() => {
         if (sliderWidth > 0) {
             const stepSize = setStepSize(max, min, step);
-            valueTextRef.current?.setNativeProps({ text: min.toString() });
+            valueTextRef.current?.setNativeProps({ text: formatValue(min) });
             if (typeof initialValue === 'number' && initialValue >= min && initialValue <= max) {
                 const offset = ((initialValue - min) / step) * stepSize - (knobSize / 2);
                 setValueStatic(offset, knobSize, stepSize);
@@ -101,7 +103,7 @@ export const Slider = ({
     }
     const setValueText = (totalOffset: number) => {
         const numericValue: number = Math.floor(((totalOffset + (knobSize / 2)) * (max - min) / sliderWidth) / step) * step + min;
-        valueTextRef.current?.setNativeProps({ text: numericValue.toString() });
+        valueTextRef.current?.setNativeProps({ text: formatValue(numericValue) });
     }
     const setStepSize = (max: number, min: number, step: number) => {
         const numberOfSteps = ((max - min) / step);
@@ -116,7 +118,7 @@ export const Slider = ({
         if (totalOffset >= - knobSize / 2 && totalOffset <= sliderWidth - knobSize / 2) {
             translateX.setValue(totalOffset);
             if (valueTextRef != null) {
-                valueTextRef.current?.setNativeProps({ text: (Math.round(((totalOffset + (knobSize / 2)) * (max - min) / sliderWidth) / step) * step + min).toString() });
+                valueTextRef.current?.setNativeProps({ text: formatValue(Math.round(((totalOffset + (knobSize / 2)) * (max - min) / sliderWidth) / step) * step + min) });
             }
             inRangeScaleX.setValue((totalOffset + (knobSize / 2)) / sliderWidth + 0.01);
         }
@@ -186,8 +188,8 @@ export const Slider = ({
             {
                 showRangeLabels &&
                 <View style={{ width: '100%', flexDirection, justifyContent: 'space-between' }}>
-                    <Text style={{ color: rangeLabelsTextColor, fontWeight: "bold", fontSize, marginLeft: -7 }}>{min}</Text>
-                    <Text style={{ color: rangeLabelsTextColor, fontWeight: "bold", fontSize }}>{max}</Text>
+                    <Text style={{ color: rangeLabelsTextColor, fontWeight: "bold", fontSize, marginLeft: -7 }}>{formatValue(min)}</Text>
+                    <Text style={{ color: rangeLabelsTextColor, fontWeight: "bold", fontSize }}>{formatValue(max)}</Text>
                 </View>
             }
         </Animated.View>

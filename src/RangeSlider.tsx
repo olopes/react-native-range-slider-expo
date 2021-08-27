@@ -26,7 +26,8 @@ interface SliderProps {
     showRangeLabels?: boolean,
     showValueLabels?: boolean,
     initialFromValue?: number,
-    initialToValue?: number
+    initialToValue?: number,
+    formatValue?: (value:number) => string
 }
 
 export default ({
@@ -43,7 +44,8 @@ export default ({
     showRangeLabels = true,
     showValueLabels = true,
     initialFromValue,
-    initialToValue
+    initialToValue,
+    formatValue = (value:number) => value.toString()
 }: SliderProps) => {
 
     // settings
@@ -83,8 +85,8 @@ export default ({
     useEffect(() => {
         if (wasInitialized) {
             const stepSize = setStepSize(max, min, step);
-            fromValueTextRef.current?.setNativeProps({ text: min.toString() });
-            toValueTextRef.current?.setNativeProps({ text: max.toString() });
+            fromValueTextRef.current?.setNativeProps({ text: formatValue(min) });
+            toValueTextRef.current?.setNativeProps({ text: formatValue(max) });
             if (typeof initialFromValue === 'number' && initialFromValue >= min && initialFromValue <= max) {
                 const offset = ((initialFromValue - min) / step) * stepSize - (knobSize / 2);
                 setFromValueStatic(offset, knobSize, stepSize);
@@ -138,11 +140,11 @@ export default ({
     const setValueText = (totalOffset: number, from = true) => {
         if (from && fromValueTextRef != null) {
             const numericValue: number = Math.floor(((totalOffset + (knobSize / 2)) * (max - min) / sliderWidth) / step) * step + min;
-            fromValueTextRef.current?.setNativeProps({ text: numericValue.toString() });
+            fromValueTextRef.current?.setNativeProps({ text: formatValue(numericValue) });
         }
         else if (from === false && toValueTextRef != null) {
             const numericValue: number = Math.ceil(((totalOffset + (knobSize / 2)) * (max - min) / sliderWidth) / step) * step + min;
-            toValueTextRef.current?.setNativeProps({ text: numericValue.toString() });
+            toValueTextRef.current?.setNativeProps({ text: formatValue(numericValue) });
         }
     }
 
@@ -283,8 +285,8 @@ export default ({
             {
                 showRangeLabels &&
                 <View style={{ width: '100%', flexDirection, justifyContent: 'space-between' }}>
-                    <Text style={{ color: rangeLabelsTextColor, fontWeight: "bold", fontSize }}>{min}</Text>
-                    <Text style={{ color: rangeLabelsTextColor, fontWeight: "bold", fontSize }}>{max}</Text>
+                    <Text style={{ color: rangeLabelsTextColor, fontWeight: "bold", fontSize }}>{formatValue(min)}</Text>
+                    <Text style={{ color: rangeLabelsTextColor, fontWeight: "bold", fontSize }}>{formatValue(max)}</Text>
                 </View>
             }
         </Animated.View>
