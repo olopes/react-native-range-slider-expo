@@ -24,6 +24,7 @@ interface SliderProps {
     showRangeLabels?: boolean,
     showValueLabels?: boolean,
     initialValue?: number,
+    valueAlwaysVisible?: boolean,
     formatValue?: (value:number) => string
 }
 
@@ -40,6 +41,7 @@ export const Slider = ({
     showRangeLabels = true,
     showValueLabels = true,
     initialValue,
+    valueAlwaysVisible = false,
     formatValue = (value:number) => value.toString()
 }: SliderProps) => {
 
@@ -144,7 +146,7 @@ export const Slider = ({
     // gesture events help functions ------------------------------------------------------------------
     const scaleTo = (param: Animated.Value, toValue: number) => Animated.timing(param,
         {
-            toValue,
+            toValue: valueAlwaysVisible ? 1 : toValue,
             duration: 150,
             useNativeDriver: true
         }
@@ -154,6 +156,7 @@ export const Slider = ({
     // setting bar width ------------------------------------------------------------------------------
     const onLayout = (event: LayoutChangeEvent) => {
         setSliderWidth(event.nativeEvent.layout.width);
+        if (valueAlwaysVisible) scaleTo(valueLabelScale, 1);
     }
     // ------------------------------------------------------------------------------------------------
 

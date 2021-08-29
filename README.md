@@ -76,7 +76,8 @@ import RangeSlider, { Slider } from 'react-native-range-slider-expo';
 | showValueLabels | boolean | no | true |
 | initialFromValue | number | no | as 'min' value |
 | initialToValue | number | no | as 'max' value |
-| formatValue | function | no | `(val:number) => val.toString()` |
+| formatValue | function | no | (val:number) => val.toString() |
+| valueAlwaysVisible | boolean | no | false |
 
 <br/>
 
@@ -97,7 +98,8 @@ import RangeSlider, { Slider } from 'react-native-range-slider-expo';
 | showRangeLabels | boolean | no | true |
 | showValueLabels | boolean | no | true |
 | initialValue | number | no | as 'min' value |
-| formatValue | function | no | `(val:number) => val.toString()` |
+| formatValue | function | no | (val:number) => val.toString() |
+| valueAlwaysVisible | boolean | no | false |
 
 <br/>
 

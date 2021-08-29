@@ -27,6 +27,7 @@ interface SliderProps {
     showValueLabels?: boolean,
     initialFromValue?: number,
     initialToValue?: number,
+    valueAlwaysVisible?: boolean,
     formatValue?: (value:number) => string
 }
 
@@ -45,6 +46,7 @@ export default ({
     showValueLabels = true,
     initialFromValue,
     initialToValue,
+    valueAlwaysVisible = false,
     formatValue = (value:number) => value.toString()
 }: SliderProps) => {
 
@@ -211,7 +213,7 @@ export default ({
     // gesture events help functions ------------------------------------------------------------------
     const scaleTo = (param: Animated.Value, toValue: number) => Animated.timing(param,
         {
-            toValue,
+            toValue: valueAlwaysVisible ? 1 : toValue,
             duration: 150,
             useNativeDriver: true
         }
@@ -231,6 +233,10 @@ export default ({
             translateXtoValue.setValue(width - knobSize / 2);
             setToValueOffset(width - knobSize / 2);
             setWasInitialized(true);
+            if (valueAlwaysVisible) {
+                scaleTo(fromValueScale, 1);
+                scaleTo(toValueScale, 1);
+            }
         }
     }
     // ------------------------------------------------------------------------------------------------

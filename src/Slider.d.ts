@@ -14,6 +14,7 @@ interface SliderProps {
     showRangeLabels?: boolean;
     showValueLabels?: boolean;
     initialValue?: number;
+    valueAlwaysVisible?: boolean;
     formatValue?: (value:number) => string;
 }
 export declare const Slider: ({ min, max, valueOnChange, step, styleSize, knobColor, inRangeBarColor, outOfRangeBarColor, valueLabelsTextColor, valueLabelsBackgroundColor, rangeLabelsTextColor, showRangeLabels, showValueLabels, initialValue }: SliderProps) => JSX.Element;

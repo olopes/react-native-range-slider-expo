@@ -17,6 +17,7 @@ interface SliderProps {
     showValueLabels?: boolean;
     initialFromValue?: number;
     initialToValue?: number;
+    valueAlwaysVisible?: boolean;
     formatValue?: (value:number) => string;
 }
 declare const _default: ({ min, max, fromValueOnChange, toValueOnChange, step, styleSize, fromKnobColor, toKnobColor, inRangeBarColor, outOfRangeBarColor, valueLabelsTextColor, valueLabelsBackgroundColor, rangeLabelsTextColor, showRangeLabels, showValueLabels, initialFromValue, initialToValue }: SliderProps) => JSX.Element;
